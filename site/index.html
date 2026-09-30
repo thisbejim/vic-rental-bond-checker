@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en-AU">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'">
+    <title>Victoria Rental Bond Checker | BondCheck VIC</title>
+    <meta name="description" content="Check a Victorian rental bond and rent-in-advance request against Consumer Affairs Victoria's one-calendar-month guidance. Free, private and instant.">
+    <link rel="canonical" href="https://thisbejim.github.io/vic-rental-bond-checker/">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Victoria Rental Bond Checker | BondCheck VIC">
+    <meta property="og:description" content="See the standard Victorian bond and rent-in-advance limits using the official calendar-month rent conversion.">
+    <meta property="og:url" content="https://thisbejim.github.io/vic-rental-bond-checker/">
+    <meta name="theme-color" content="#f4f6f1">
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="./styles.css">
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "BondCheck VIC",
+        "url": "https://thisbejim.github.io/vic-rental-bond-checker/",
+        "applicationCategory": "UtilitiesApplication",
+        "operatingSystem": "Any",
+        "description": "A private, browser-based checker for standard Victorian residential bond and rent-in-advance amounts."
+      }
+    </script>
+    <script type="module" src="./app.js"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to checker</a>
+    <header class="topbar">
+      <a class="brand" href="./" aria-label="BondCheck VIC home">
+        <span class="brand-mark" aria-hidden="true">B</span>
+        <span>BondCheck <span class="brand-region">VIC</span></span>
+      </a>
+      <a class="topbar-link" href="#how-it-works">How it works <span aria-hidden="true">↗</span></a>
+    </header>
+
+    <main id="main">
+      <section class="hero" aria-labelledby="page-title">
+        <div class="hero-copy">
+          <p class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span> Victorian private rentals</p>
+          <h1 id="page-title">Check your rental<br><span>bond in Victoria.</span></h1>
+          <p class="hero-description">Check a bond or rent-in-advance request against Victoria’s standard one-calendar-month limit. Get the number before you pay.</p>
+          <div class="trust-row" aria-label="Privacy features">
+            <span><svg viewBox="0 0 18 18" aria-hidden="true"><path d="M9 1.8 3.5 4v4.2c0 3.4 2.2 6.3 5.5 8 3.3-1.7 5.5-4.6 5.5-8V4L9 1.8Z"/><path d="m6.5 8.9 1.7 1.7 3.5-3.7"/></svg> Private by design</span>
+            <span><svg viewBox="0 0 18 18" aria-hidden="true"><path d="M9 2.2 10.8 6l4.2.6-3 2.9.7 4.2L9 11.7l-3.7 2 .7-4.2-3-2.9L7.2 6 9 2.2Z"/></svg> Uses official guidance</span>
+          </div>
+        </div>
+        <div class="hero-stamp" aria-hidden="true">
+          <span class="stamp-top">RENT SMART</span>
+          <span class="stamp-symbol">✓</span>
+          <span class="stamp-bottom">VIC · 2026</span>
+        </div>
+      </section>
+
+      <section class="checker-grid" aria-label="Bond and rent checker">
+        <form class="input-card" id="checker-form" novalidate>
+          <div class="card-heading">
+            <span class="step-number">01</span>
+            <div>
+              <h2>Your rent</h2>
+              <p>Use the amount and payment period in your agreement.</p>
+            </div>
+          </div>
+
+          <div class="field-label-row">
+            <label for="rent-amount">Rent amount</label>
+            <span class="sample-note">Example loaded — change to yours</span>
+          </div>
+          <div class="rent-entry">
+            <span class="currency-prefix" aria-hidden="true">$</span>
+            <input id="rent-amount" name="rentAmount" type="number" min="0.01" step="0.01" inputmode="decimal" value="550" aria-describedby="rent-error">
+            <label class="visually-hidden" for="rent-period">Rent payment period</label>
+            <select id="rent-period" name="rentPeriod">
+              <option value="daily">per day</option>
+              <option value="weekly" selected>per week</option>
+              <option value="fortnightly">per fortnight</option>
+              <option value="monthly">per month</option>
+              <option value="sixMonthly">per 6 months</option>
+              <option value="yearly">per year</option>
+            </select>
+          </div>
+          <p class="field-error" id="rent-error" aria-live="polite"></p>
+
+          <div class="divider"><span>Optional comparison</span></div>
+
+          <label for="bond-requested">Bond they asked for</label>
+          <div class="money-entry">
+            <span class="currency-prefix" aria-hidden="true">$</span>
+            <input id="bond-requested" name="bondRequested" type="number" min="0" step="0.01" inputmode="decimal" placeholder="Enter bond amount">
+          </div>
+
+          <label for="advance-requested">Rent in advance they asked for</label>
+          <div class="money-entry">
+            <span class="currency-prefix" aria-hidden="true">$</span>
+            <input id="advance-requested" name="advanceRequested" type="number" min="0" step="0.01" inputmode="decimal" placeholder="Enter advance rent">
+          </div>
+          <p class="field-hint">Leave either field blank to see its standard limit only.</p>
+
+          <label class="check-row" for="vcat-order">
+            <input id="vcat-order" name="vcatOrder" type="checkbox">
+            <span>A VCAT order allows a higher bond for this property</span>
+          </label>
+
+          <button class="reset-button" id="reset-button" type="button">Reset example</button>
+        </form>
+
+        <section class="result-card" aria-labelledby="result-title">
+          <div class="result-topline">
+            <span class="step-number step-number-light">02</span>
+            <span class="result-label">STANDARD MONTHLY FIGURE</span>
+          </div>
+          <h2 id="result-title">One calendar month of rent</h2>
+          <p class="main-amount" id="monthly-rent">$2,389.88</p>
+          <p class="result-context" id="weekly-context">Based on $550.00 per week</p>
+          <div class="result-rule" id="rule-status">
+            <span class="rule-icon" aria-hidden="true">✓</span>
+            <span>For weekly rent of $900 or less, the standard bond and advance-rent limit is one month.</span>
+          </div>
+
+          <div class="comparison-list">
+            <div class="comparison-row" id="bond-result-row">
+              <div class="comparison-label"><span class="result-icon result-icon-bond" aria-hidden="true">B</span><span>Bond</span></div>
+              <div class="comparison-value"><strong id="bond-limit">$2,389.88</strong><span id="bond-check">Standard maximum</span></div>
+            </div>
+            <div class="comparison-row" id="advance-result-row">
+              <div class="comparison-label"><span class="result-icon result-icon-rent" aria-hidden="true">R</span><span>Rent in advance</span></div>
+              <div class="comparison-value"><strong id="advance-limit">$2,389.88</strong><span id="advance-check">Standard maximum</span></div>
+            </div>
+          </div>
+
+          <p class="result-footnote" id="result-footnote">Four weeks is 28 days. A calendar month is calculated from 365 ÷ 12 days, following CAV’s rent calculator.</p>
+          <p class="visually-hidden" id="result-announcement" aria-live="polite" aria-atomic="true"></p>
+        </section>
+      </section>
+
+      <section class="clarifier" aria-label="Important scope">
+        <span class="clarifier-icon" aria-hidden="true">i</span>
+        <p><strong>For standard private residential rentals in Victoria.</strong> Different bond rules apply to rooming houses, caravan parks and residential parks. Higher bond exceptions can also apply when weekly rent is over $900 or VCAT has ordered a higher bond.</p>
+        <a href="https://www.consumer.vic.gov.au/housing/renting/rent-bond-bills-and-condition-reports/bond/bond-amounts-and-paying-a-bond" target="_blank" rel="noopener noreferrer">Check CAV’s bond guidance <span aria-hidden="true">↗</span></a>
+      </section>
+
+      <section class="explainer" id="how-it-works" aria-labelledby="how-title">
+        <div class="explainer-intro">
+          <p class="eyebrow">The detail that changes the number</p>
+          <h2 id="how-title">A month isn’t<br>four weeks.</h2>
+          <p>Four weeks is 28 days. Consumer Affairs Victoria converts weekly rent to a calendar month using 365 days ÷ 12. That small distinction can change the bond figure by hundreds of dollars.</p>
+        </div>
+        <div class="formula-card">
+          <div class="formula-top"><span>OFFICIAL CONVERSION</span><span class="formula-badge">CAV</span></div>
+          <p class="formula">Daily rent <span>×</span> <b>365 ÷ 12</b> <span>=</span> Monthly rent</p>
+          <div class="formula-example">
+            <span>Example: $550 per week</span>
+            <strong>$550 ÷ 7 × 365 ÷ 12 = $2,389.88</strong>
+          </div>
+          <p class="formula-note">The usual Victorian bond limit is one calendar month of rent when rent is $900 a week or less. The same one-month limit generally applies to rent paid in advance.</p>
+        </div>
+      </section>
+
+      <section class="next-steps" aria-labelledby="next-title">
+        <div>
+          <p class="eyebrow">Know what to check</p>
+          <h2 id="next-title">Your next step</h2>
+          <p>If a request is above the standard figure, check the rental type and any VCAT order before acting. You can confirm the rule with Consumer Affairs Victoria or Tenants Victoria.</p>
+        </div>
+        <div class="source-links">
+          <a href="https://www.consumer.vic.gov.au/housing/renting/rent-bond-bills-and-condition-reports/bond/bond-amounts-and-paying-a-bond" target="_blank" rel="noopener noreferrer"><span class="source-number">01</span><span><strong>Bond amounts and exceptions</strong><small>Consumer Affairs Victoria</small></span><span class="source-arrow" aria-hidden="true">↗</span></a>
+          <a href="https://www.consumer.vic.gov.au/housing/renting/rent-bond-bills-and-condition-reports/rent/rent-calculator" target="_blank" rel="noopener noreferrer"><span class="source-number">02</span><span><strong>Calendar-month rent conversion</strong><small>Consumer Affairs Victoria</small></span><span class="source-arrow" aria-hidden="true">↗</span></a>
+          <a href="https://tenantsvic.org.au/explore-topics/starting-your-tenancy/bonds/private-rental/" target="_blank" rel="noopener noreferrer"><span class="source-number">03</span><span><strong>Private rental bond guide</strong><small>Tenants Victoria</small></span><span class="source-arrow" aria-hidden="true">↗</span></a>
+        </div>
+      </section>
+
+      <section class="faq-section" aria-labelledby="faq-title">
+        <div class="faq-heading"><p class="eyebrow">Quick answers</p><h2 id="faq-title">Good to know</h2></div>
+        <div class="faq-list">
+          <details>
+            <summary>Why is the result different from four weeks of rent?</summary>
+            <p>Four weeks is 28 days. CAV’s rent calculator uses 365 ÷ 12 days for a calendar month, so the usual monthly figure is higher than four weeks of weekly rent.</p>
+          </details>
+          <details>
+            <summary>What if the rent is more than $900 per week?</summary>
+            <p>CAV says the usual one-month bond cap and one-month advance-rent rule do not apply above $900 per week. The checker shows that exception instead of guessing a maximum.</p>
+          </details>
+          <details>
+            <summary>Does this cover rooming houses or caravan parks?</summary>
+            <p>No. Those rental types have different rules. Use the Consumer Affairs Victoria bond guide linked above for the rules that apply to your agreement.</p>
+          </details>
+          <details>
+            <summary>Is this legal advice?</summary>
+            <p>No. It is a calculation aid based on published CAV guidance, last checked on 1 October 2026. It does not account for every agreement or exception. Confirm your situation with CAV or Tenants Victoria.</p>
+          </details>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <a class="brand footer-brand" href="./"><span class="brand-mark" aria-hidden="true">B</span><span>BondCheck <span class="brand-region">VIC</span></span></a>
+      <p>Your numbers stay in this browser. No account, ads or tracking.</p>
+      <span>© 2026 · Open source · <a href="https://github.com/thisbejim/vic-rental-bond-checker">View code</a></span>
+    </footer>
+  </body>
+</html>
